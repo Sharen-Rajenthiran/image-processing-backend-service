@@ -1,14 +1,14 @@
-package com.example.image_processing_service.controller;
+package com.example.image_processing_service.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.bytedeco.opencv.global.opencv_core;
 
 @RestController
-public class HelloController {
-    @GetMapping("/hello")
+public class RootController {
+    @GetMapping("/")
     public String hello() {
-        return "Hello from Spring Boot!";
+        return "Welcome to Image Processing Service!";
     }
 
     @GetMapping("/opencv-version")
