@@ -3,6 +3,7 @@ package com.example.image_processing_service.services;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.bytedeco.opencv.opencv_core.*;
 import org.bytedeco.opencv.global.opencv_imgproc;
+import org.bytedeco.opencv.global.opencv_imgcodecs;
 
 public class Transformations {
     // List of Transformations
@@ -10,6 +11,7 @@ public class Transformations {
     // Crop: width, height
     // Rotate: rotation
     // Filter: grayscale
+    // Save: png, jpg, jpeg
 
     // Resize
     public static Mat resize(Mat source, int width, int height) {
@@ -40,11 +42,15 @@ public class Transformations {
         return grayscaleImage;
     }
 
-
-
-
-
-
-
+    // Save format: png, jpg, jpeg
+    public static String saveTo(Mat source, String format, String baseFileName) {
+        String normalizedFormat = format.toLowerCase();
+        if (normalizedFormat.equals("jpeg")) {
+            normalizedFormat = "jpg";
+        }
+        String finalFilename = baseFileName + "." + normalizedFormat;
+        opencv_imgcodecs.imwrite(finalFilename, source);
+        return finalFilename;
+    }
 
 }

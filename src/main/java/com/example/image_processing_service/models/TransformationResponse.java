@@ -4,11 +4,21 @@ public class TransformationResponse {
     private String message;
     private String inputPath;
     private String outputPath;
+    private String imageName;
+    private String imageFormat;
 
-    public TransformationResponse(String message, String inputPath, String outputPath) {
+    public TransformationResponse(
+            String message,
+            String inputPath,
+            String outputPath,
+            String imageName,
+            String imageFormat
+    ) {
         this.message = message;
         this.inputPath = inputPath;
         this.outputPath = outputPath;
+        this.imageName = imageName;
+        this.imageFormat = imageFormat;
     }
 
     // Getters & Setters
@@ -35,4 +45,21 @@ public class TransformationResponse {
     public void setOutputPath(String outputPath) {
         this.outputPath = outputPath;
     }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageFormat() {
+        return imageFormat;
+    }
+
+    public void setImageFormat(String imageFormat) {
+        this.imageFormat = imageFormat;
+    }
+
 }

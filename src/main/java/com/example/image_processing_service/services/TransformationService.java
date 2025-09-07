@@ -19,11 +19,16 @@ public class TransformationService {
             return new TransformationResponse(
                     "Error: Could not load image",
                     inputPath,
+                    null,
+                    null,
                     null
             );
         }
 
         Mat result = source;
+        String finalFilename;
+        String imageFormat;
+        String outputPath;
 
         // Apply test transformation
         if (request.getResize() != null) {
@@ -32,13 +37,26 @@ public class TransformationService {
                     request.getResize().getHeight());
         }
 
-        String outputPath = TEST_IMAGE + "out_" + filename;
-        opencv_imgcodecs.imwrite(outputPath, result);
+        if (request.getFormat() != null) {
+            finalFilename = "user_" + filename.split("\\.")[0];
+            imageFormat = request.getFormat();
+            outputPath = TEST_IMAGE + finalFilename + "." + imageFormat;
+            Transformations.saveTo(result, imageFormat, TEST_IMAGE + finalFilename);
+        } else {
+            finalFilename = "out_" + filename;
+            outputPath = TEST_IMAGE + finalFilename;
+            opencv_imgcodecs.imwrite(outputPath, result);
+
+            String[] splittedFilename = outputPath.split("\\.");
+            imageFormat = splittedFilename[splittedFilename.length - 1];
+        }
 
         return new TransformationResponse(
                 "Transformation successful",
                 inputPath,
-                outputPath
+                outputPath,
+                finalFilename,
+                imageFormat
         );
     }
 
