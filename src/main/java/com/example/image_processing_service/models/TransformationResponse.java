@@ -6,19 +6,22 @@ public class TransformationResponse {
     private String outputPath;
     private String imageName;
     private String imageFormat;
+    private AppliedTransformations transformations;
 
     public TransformationResponse(
             String message,
             String inputPath,
             String outputPath,
             String imageName,
-            String imageFormat
+            String imageFormat,
+            AppliedTransformations transformations
     ) {
         this.message = message;
         this.inputPath = inputPath;
         this.outputPath = outputPath;
         this.imageName = imageName;
         this.imageFormat = imageFormat;
+        this.transformations = transformations;
     }
 
     // Getters & Setters
@@ -60,6 +63,14 @@ public class TransformationResponse {
 
     public void setImageFormat(String imageFormat) {
         this.imageFormat = imageFormat;
+    }
+
+    public AppliedTransformations getTransformations() {
+        return transformations;
+    }
+
+    public void setTransformations(AppliedTransformations transformations) {
+        this.transformations = transformations;
     }
 
 }
