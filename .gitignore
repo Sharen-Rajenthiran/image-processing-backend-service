@@ -35,3 +35,4 @@ build/
 ### Project Specific ###
 images
 notes.txt
+config.properties
