@@ -21,8 +21,21 @@ public class Transformations {
     }
 
     // Crop
-    public static Mat crop(Mat source, int width, int height) {
-        Rect roi = new Rect(0, 0, Math.min(width, source.cols()), Math.min(height, source.rows()));
+    public static Mat crop(Mat source, int x, int y, int width, int height) {
+        // Rectangle
+        // (x,y) Top left
+        // (x + width, y) Top right
+        // (x, y + height) Bottom left
+        // (x + width, y + height) Bottom right
+        // Compactly, we write (x, y, width, height) which defines a rectangle
+        int cropWidth = Math.min(width, source.cols() - x);
+        int cropHeight = Math.min(height, source.rows() - y);
+
+        if (x < 0 || y < 0 || cropWidth <= 0 || cropHeight <= 0) {
+            throw new IllegalArgumentException("Invalid crop dimensions or coordinates");
+        }
+
+        Rect roi = new Rect(x, y, cropWidth, cropHeight);
         return new Mat(source, roi).clone(); // clone so we don't reference original memory
     }
 

@@ -1,5 +1,6 @@
 package com.example.image_processing_service.services;
 
+import com.example.image_processing_service.models.AppliedTransformations;
 import com.example.image_processing_service.models.TransformationRequest;
 import com.example.image_processing_service.models.TransformationResponse;
 import com.example.image_processing_service.utils.ConfigUtil;
@@ -28,6 +29,7 @@ public class TransformationService {
                     inputPath,
                     null,
                     null,
+                    null,
                     null
             );
         }
@@ -37,11 +39,38 @@ public class TransformationService {
         String imageFormat;
         String outputPath;
 
+        AppliedTransformations appliedTransformations = new AppliedTransformations();
+
         // Apply test transformation
         if (request.getResize() != null) {
-            result = Transformations.resize(result,
+            result = Transformations.resize(
+                    result,
                     request.getResize().getWidth(),
-                    request.getResize().getHeight());
+                    request.getResize().getHeight()
+            );
+            appliedTransformations.setResize(request.getResize());
+        }
+
+        if (request.getCrop() != null) {
+            result = Transformations.crop(
+                    result,
+                    request.getCrop().getX(),
+                    request.getCrop().getY(),
+                    request.getCrop().getWidth(),
+                    request.getCrop().getHeight()
+            );
+
+            appliedTransformations.setCrop(request.getCrop());
+        }
+
+        if (request.getRotate() != null) {
+            result = Transformations.rotate(result, request.getRotate());
+            appliedTransformations.setRotate(request.getRotate());
+        }
+
+        if (request.getFilters() != null) {
+            result = Transformations.toGray(result);
+            appliedTransformations.setFilters(request.getFilters());
         }
 
         if (request.getFormat() != null) {
@@ -49,6 +78,8 @@ public class TransformationService {
             imageFormat = request.getFormat();
             outputPath = TEST_IMAGE + "//" + finalFilename + "." + imageFormat;
             Transformations.saveTo(result, imageFormat, TEST_IMAGE + "//" + finalFilename);
+
+            appliedTransformations.setFormat(request.getFormat());
         } else {
             finalFilename = "out_" + filename;
             outputPath = TEST_IMAGE + "//" + finalFilename;
@@ -56,6 +87,8 @@ public class TransformationService {
 
             String[] splittedFilename = outputPath.split("\\.");
             imageFormat = splittedFilename[splittedFilename.length - 1];
+
+            appliedTransformations.setFormat(imageFormat);
         }
 
         return new TransformationResponse(
@@ -63,7 +96,8 @@ public class TransformationService {
                 inputPath,
                 outputPath,
                 finalFilename,
-                imageFormat
+                imageFormat,
+                appliedTransformations
         );
     }
 
