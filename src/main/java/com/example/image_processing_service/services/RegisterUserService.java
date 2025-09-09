@@ -1,5 +1,5 @@
 package com.example.image_processing_service.services;
 
-public class RegisterUser {
+public class RegisterUserService {
 
 }
